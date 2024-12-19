@@ -7,9 +7,9 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::get('/', function () {
-    return ['Laravel ASHIK' => app()->version()];
-});
+// Route::get('/', function () {
+//     return ['Laravel ASHIK' => app()->version()];
+// });
 
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\ServicesController;
@@ -30,5 +30,5 @@ Route::apiResource('services', ServicesController::class);
 // Route::get('states/{id}', [StatesController::class, 'show']);
 Route::apiResource('states',StatesController::class,);
 Route::apiResource('cities',CitiesController::class,);
-Route::apiResource('service-organizations', ServiceorganizationController::class);
+Route::apiResource('serviceorganizations', ServiceorganizationController::class);
 Route::apiResource('servicesproviders', ServicesprovidersController::class);

@@ -7,8 +7,8 @@ use App\Models\Serviceorganization;
 
 class ServiceorganizationSeeder extends Seeder
 {
-    public function run(): void
+    public function run()
     {
-        Serviceorganization::factory(10)->create();
+        Serviceorganization::factory()->count(10)->create();
     }
 }

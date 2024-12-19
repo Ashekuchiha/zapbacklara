@@ -46,7 +46,7 @@ class StoreServicesRequest extends FormRequest
             'description' => 'nullable|string',
             'icon' => 'nullable|image',
             'featured' => 'nullable|string|in:Yes,No',
-            'status' => 'required|string|in:Active,Inactive',
+            'status' => 'required|string',
             'amount' => 'required|numeric',
             'type' => 'required|string',
             'bookingsFee' => 'nullable|numeric',

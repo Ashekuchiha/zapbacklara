@@ -46,7 +46,7 @@ class UpdateServicesRequest extends FormRequest
             'description' => 'nullable|string',
             'icon' => 'nullable|image',
             'featured' => 'nullable|string|in:Yes,No',
-            'status' => 'sometimes|required|string|in:Active,Inactive',
+            'status' => 'sometimes|required|string',
             'amount' => 'sometimes|required|numeric',
             'type' => 'sometimes|required|string',
             'bookingsFee' => 'nullable|numeric',

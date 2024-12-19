@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Cities;
 use Illuminate\Http\Request;
+use App\Http\Requests\StorecitiesRequest;
+use App\Http\Requests\UpdatecitiesRequest;
 
 class CitiesController extends Controller
 {
+    // Fetch all cities with pagination
     public function index(Request $request)
     {
         $perPage = $request->query('per_page', 20);
@@ -28,9 +31,79 @@ class CitiesController extends Controller
                 'prev_page_url' => $cities->previousPageUrl(),
                 'links' => $cities->linkCollection(),
             ],
-            'message' => 'Cities retrieved successfully.'
+            'message' => 'Cities retrieved successfully.',
         ]);
     }
 
-    // Other CRUD methods (store, show, update, destroy) can be added as needed.
+    // Create a new city
+    public function store(StorecitiesRequest $request)
+    {
+        $city = Cities::create($request->validated());
+
+        return response()->json([
+            'success' => true,
+            'data' => $city,
+            'message' => 'City created successfully.',
+        ], 201);
+    }
+
+    // Show a specific city by ID
+    public function show($id)
+    {
+        $city = Cities::find($id);
+
+        if (!$city) {
+            return response()->json([
+                'success' => false,
+                'message' => 'City not found.',
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $city,
+            'message' => 'City retrieved successfully.',
+        ]);
+    }
+
+    // Update a specific city by ID
+    public function update(UpdatecitiesRequest $request, $id)
+    {
+        $city = Cities::find($id);
+
+        if (!$city) {
+            return response()->json([
+                'success' => false,
+                'message' => 'City not found.',
+            ], 404);
+        }
+
+        $city->update($request->validated());
+
+        return response()->json([
+            'success' => true,
+            'data' => $city,
+            'message' => 'City updated successfully.',
+        ]);
+    }
+
+    // Delete a specific city by ID
+    public function destroy($id)
+    {
+        $city = Cities::find($id);
+
+        if (!$city) {
+            return response()->json([
+                'success' => false,
+                'message' => 'City not found.',
+            ], 404);
+        }
+
+        $city->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'City deleted successfully.',
+        ]);
+    }
 }

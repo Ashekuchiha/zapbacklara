@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->string('icon')->nullable();
             $table->enum('featured', ['Yes', 'No']);
-            $table->enum('status', ['Active', 'Inactive']);
+            $table->string('status');
             $table->decimal('amount', 10, 2);
             $table->string('type'); // e.g., 'flat', 'percentage'
             $table->decimal('bookingsFee', 10, 2)->nullable();
