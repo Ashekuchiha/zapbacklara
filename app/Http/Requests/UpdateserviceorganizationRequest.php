@@ -25,11 +25,12 @@ class UpdateserviceorganizationRequest extends FormRequest
             'organizationWebsite' => 'nullable|url',
             'phoneNumber' => 'nullable|string|max:20',
             'emergencyPhoneNumber' => 'nullable|string|max:20',
-            'employeeNumbers' => 'nullable|string|max:10',
-            'organizationLogo' => 'nullable|file|mimes:jpg,jpeg,png',
-            'organizationBanner' => 'nullable|file|mimes:jpg,jpeg,png',
-            'tradeLicense' => 'nullable|file|mimes:pdf',
-            'organizationDocuments' => 'nullable|file|mimes:pdf',
+            'employeeNumbers' => 'nullable|string|max:20',
+            // 'organizationLogo' => 'nullable|file|mimes:jpg,jpeg,png',
+            'organizationLogo' => 'nullable|image',
+            'organizationBanner' => 'nullable|image',
+            'tradeLicense' => 'nullable|image',
+            'organizationDocuments' => 'nullable|image',
             'featured' => 'nullable|boolean',
         ];
     }

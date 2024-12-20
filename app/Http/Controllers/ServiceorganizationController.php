@@ -183,6 +183,7 @@ use App\Models\Serviceorganization;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 
 class ServiceorganizationController extends Controller
 {
@@ -298,81 +299,146 @@ class ServiceorganizationController extends Controller
     //update
     public function update(Request $request, $id)
     {
+        logger('Incoming data for service organization update:', $request->all());
+    
         // Find the service organization by id
         $serviceOrganization = Serviceorganization::find($id);
-    
-        // If the service organization is not found, return a 404 response
         if (!$serviceOrganization) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Service organization not found.',
-            ], 404);
+            return response()->json(['error' => 'Service organization not found'], 404);
         }
     
-        // Log the incoming request data for debugging purposes
-        Log::info('Request Data for Update:', $request->all());
-    
         // Validate the incoming request data
-        $validated = $request->validate([
+        $validatedData = $request->validate([
             'organizationName' => 'nullable|string|max:255',
             'ownerName' => 'nullable|string|max:255',
             'state' => 'nullable|string|max:255',
             'city' => 'nullable|string|max:255',
             'address' => 'nullable|string|max:255',
-            'mapSelection' => 'nullable|string',  // Keep it as a string, but you might want to handle it as JSON later
+            'mapSelection' => 'nullable|string',
             'organizationBio' => 'nullable|string',
             'organizationDescription' => 'nullable|string',
             'organizationWebsite' => 'nullable|url',
             'phoneNumber' => 'nullable|string|max:20',
             'emergencyPhoneNumber' => 'nullable|string|max:20',
-            'employeeNumbers' => 'nullable|string|max:10',
-            'organizationLogo' => 'nullable|file|mimes:jpg,jpeg,png',
-            'organizationBanner' => 'nullable|file|mimes:jpg,jpeg,png',
-            'tradeLicense' => 'nullable|file|mimes:pdf',
-            'organizationDocuments' => 'nullable|file|mimes:pdf',
+            'employeeNumbers' => 'nullable|string|max:20',
+            'organizationLogo' => 'nullable',
+            'organizationBanner' => 'nullable',
+            'tradeLicense' => 'nullable',
+            'organizationDocuments' => 'nullable',
             'featured' => 'nullable|boolean',
         ]);
     
-        // Log the validated data for debugging purposes
-        Log::info('Validated Data for Update:', $validated);
-    
-        // Handle file uploads if any
+        // Handle file uploads
         if ($request->hasFile('organizationLogo')) {
-            $validated['organizationLogo'] = $request->file('organizationLogo')->store('logos', 'public');
+            $validatedData['organizationLogo'] = Storage::url($request->file('organizationLogo')->store('logos', 'public'));
         }
     
         if ($request->hasFile('organizationBanner')) {
-            $validated['organizationBanner'] = $request->file('organizationBanner')->store('banners', 'public');
+            $validatedData['organizationBanner'] = Storage::url($request->file('organizationBanner')->store('banners', 'public'));
         }
     
         if ($request->hasFile('tradeLicense')) {
-            $validated['tradeLicense'] = $request->file('tradeLicense')->store('licenses', 'public');
+            $validatedData['tradeLicense'] = Storage::url($request->file('tradeLicense')->store('licenses', 'public'));
         }
     
         if ($request->hasFile('organizationDocuments')) {
-            $documents = [];
-            foreach ($request->file('organizationDocuments') as $file) {
-                $documents[] = $file->store('documents', 'public');
-            }
-            $validated['organizationDocuments'] = json_encode($documents);
-        }
+        //     $documents = [];
+        //     foreach ($request->file('organizationDocuments') as $file) {
+        //         $documents[] = Storage::url($file->store('documents', 'public'));
+        //     }
+        //     $validatedData['organizationDocuments'] = json_encode($documents);
+        $validatedData['organizationDocuments'] = Storage::url($request->file('organizationDocuments')->store('documents', 'public'));
+
+         }
     
-        // Log the validated and processed data (including file uploads) before updating
-        Log::info('Data to be updated:', $validated);
-    
-        // Update the service organization record in the database
-        $serviceOrganization->update($validated);
-    
-        // Log the updated record after applying the changes
-        Log::info('Updated Service Organization:', $serviceOrganization->fresh()->toArray());
+        // Update the service organization record
+        $serviceOrganization->update($validatedData);
     
         // Return a success response
         return response()->json([
             'success' => true,
-            'message' => 'Service organization updated successfully.',
             'data' => $serviceOrganization,
+            'message' => 'Service organization updated successfully.',
         ], 200);
     }
+    
+    // public function update(Request $request, $id)
+    // {
+    //     // Find the service organization by id
+    //     $serviceOrganization = Serviceorganization::find($id);
+    
+    //     // If the service organization is not found, return a 404 response
+    //     if (!$serviceOrganization) {
+    //         return response()->json([
+    //             'success' => false,
+    //             'message' => 'Service organization not found.',
+    //         ], 404);
+    //     }
+    
+    //     // Log the incoming request data for debugging purposes
+    //     Log::info('Request Data for Update:', $request->all());
+    
+    //     // Validate the incoming request data
+    //     $validated = $request->validate([
+    //         'organizationName' => 'nullable|string|max:255',
+    //         'ownerName' => 'nullable|string|max:255',
+    //         'state' => 'nullable|string|max:255',
+    //         'city' => 'nullable|string|max:255',
+    //         'address' => 'nullable|string|max:255',
+    //         'mapSelection' => 'nullable|string',  // Keep it as a string, but you might want to handle it as JSON later
+    //         'organizationBio' => 'nullable|string',
+    //         'organizationDescription' => 'nullable|string',
+    //         'organizationWebsite' => 'nullable|url',
+    //         'phoneNumber' => 'nullable|string|max:20',
+    //         'emergencyPhoneNumber' => 'nullable|string|max:20',
+    //         'employeeNumbers' => 'nullable|string|max:10',
+    //         'organizationLogo' => 'nullable|file|mimes:jpg,jpeg,png',
+    //         'organizationBanner' => 'nullable|file|mimes:jpg,jpeg,png',
+    //         'tradeLicense' => 'nullable|file|mimes:pdf',
+    //         'organizationDocuments' => 'nullable|file|mimes:pdf',
+    //         'featured' => 'nullable|boolean',
+    //     ]);
+    
+    //     // Log the validated data for debugging purposes
+    //     Log::info('Validated Data for Update:', $validated);
+    
+    //     // Handle file uploads if any
+    //     if ($request->hasFile('organizationLogo')) {
+    //         $validated['organizationLogo'] = $request->file('organizationLogo')->store('logos', 'public');
+    //     }
+    
+    //     if ($request->hasFile('organizationBanner')) {
+    //         $validated['organizationBanner'] = $request->file('organizationBanner')->store('banners', 'public');
+    //     }
+    
+    //     if ($request->hasFile('tradeLicense')) {
+    //         $validated['tradeLicense'] = $request->file('tradeLicense')->store('licenses', 'public');
+    //     }
+    
+    //     if ($request->hasFile('organizationDocuments')) {
+    //         $documents = [];
+    //         foreach ($request->file('organizationDocuments') as $file) {
+    //             $documents[] = $file->store('documents', 'public');
+    //         }
+    //         $validated['organizationDocuments'] = json_encode($documents);
+    //     }
+    
+    //     // Log the validated and processed data (including file uploads) before updating
+    //     Log::info('Data to be updated:', $validated);
+    
+    //     // Update the service organization record in the database
+    //     $serviceOrganization->update($validated);
+    
+    //     // Log the updated record after applying the changes
+    //     Log::info('Updated Service Organization:', $serviceOrganization->fresh()->toArray());
+    
+    //     // Return a success response
+    //     return response()->json([
+    //         'success' => true,
+    //         'message' => 'Service organization updated successfully.',
+    //         'data' => $serviceOrganization,
+    //     ], 200);
+    // }
     //delet
     public function destroy($id)
     {
