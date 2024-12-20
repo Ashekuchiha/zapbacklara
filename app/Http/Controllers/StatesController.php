@@ -4,9 +4,34 @@ namespace App\Http\Controllers;
 
 use App\Models\States;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 
 class StatesController extends Controller
 {
+
+    //all state
+    public function getAllStates(): JsonResponse
+    {
+        $states = States::all();
+        $response = [
+            "success" => true,
+            "data" => [
+                "data" => $states->map(function ($state) {
+                    return [
+                        "id" => $state->id,
+                        "StateName" => $state->StateName,
+                        "longitude" => $state->longitude,
+                        "latitude" => $state->latitude,
+                    ];
+                }),
+                "total" => $states->count(),
+            ],
+            "message" => "Service locations retrieved successfully.",
+        ];
+
+        return response()->json($response);
+    }
+
     //all 
     public function index(Request $request)
     {

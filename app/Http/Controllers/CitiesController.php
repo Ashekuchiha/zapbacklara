@@ -9,6 +9,34 @@ use App\Http\Requests\UpdatecitiesRequest;
 
 class CitiesController extends Controller
 {
+    //by state
+
+    public function getCitiesByState(Request $request, $StateName)
+    {
+        try {
+            // Fetch cities where StateName matches the parameter
+            $cities = Cities::where('StateName', $StateName)->get();
+    
+            // Structure the response
+            $response = [
+                'success' => true,
+                'data' => [
+                    'data' => $cities,
+                    'total' => $cities->count(),
+                ],
+                'message' => 'city locations retrieved successfully.',
+            ];
+    
+            return response()->json($response, 200);
+        } catch (\Exception $e) {
+            // Handle errors
+            return response()->json([
+                'success' => false,
+                'message' => 'Error retrieving city locations.',
+            ], 500);
+        }
+    }
+    
     // Fetch all cities with pagination
     public function index(Request $request)
     {

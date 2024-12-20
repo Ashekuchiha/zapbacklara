@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Services;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cache;
 
 class ServicesController extends Controller
 {
@@ -66,10 +68,50 @@ class ServicesController extends Controller
     }
 
     // Update an existing service
+    // public function update(Request $request, $id)
+    // {
+    //     $service = Services::find($id);
+    //     if (!$service) {
+    //         return response()->json(['error' => 'Service not found'], 404);
+    //     }
+    
+    //     $validatedData = $request->validate([
+    //         'name' => 'sometimes|required|string|max:255',
+    //         'description' => 'nullable|string',
+    //         'icon' => 'nullable|image',
+    //         'featured' => 'nullable|boolean',
+    //         'status' => 'nullable|string',
+    //         'amount' => 'nullable|numeric',
+    //         'type' => 'nullable|string',
+    //         'bookingsFee' => 'nullable|numeric',
+    //         'bookingType' => 'nullable|string',
+    //     ]);
+    
+    //     if ($request->hasFile('icon')) {
+    //         if ($request->file('icon')->isValid()) {
+    //             $validatedData['icon'] = $request->file('icon')->store('servicesIcons', 'public');
+    //         } else {
+    //             return response()->json(['error' => 'Invalid icon file.'], 400);
+    //         }
+    //     }
+    
+    //     // Force type consistency for 'featured'
+    //     $validatedData['featured'] = (bool) $request->input('featured', false);
+    
+    //     $service->update($validatedData);
+    
+    //     return response()->json([
+    //         'success' => true,
+    //         'data' => $service,
+    //         'message' => 'Service updated successfully.',
+    //     ], 200);
+    // }
+    
     public function update(Request $request, $id)
     {
+        logger('Incoming data for service update:', $request->all());
+        // return response()->json($request->all());
         $service = Services::find($id);
-
         if (!$service) {
             return response()->json(['error' => 'Service not found'], 404);
         }

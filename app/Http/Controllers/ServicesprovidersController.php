@@ -72,52 +72,52 @@ class ServicesprovidersController extends Controller
     }
 
     // Update an existing record
-    public function update(Request $request, Servicesproviders $servicesprovider)
-    {
-        $validated = $request->validate([
-            'name' => 'sometimes|string',
-            'email' => 'sometimes|email|unique:servicesproviders,email,' . $servicesprovider->id,
-            'assistantName' => 'sometimes|string',
-            'assistantphoneNumber' => 'nullable|string',
-            'qualification' => 'sometimes|string',
-            'phoneNumber' => 'nullable|string',
-            'organizationMobile' => 'nullable|string',
-            'password' => 'sometimes|string',
-            'service' => 'sometimes|string',
-            'specialized' => 'sometimes|string',
-            'experience' => 'sometimes|integer',
-            'serviceOrganization' => 'sometimes|array',
-            'status' => 'sometimes|string',
-            'amount' => 'nullable|string',
-            'type' => 'nullable|string',
-            'featured' => 'sometimes|boolean',
-            'profileImage' => 'nullable|image',
-            'certificate' => 'nullable|image',
-        ]);
+    // public function update(Request $request, Servicesproviders $servicesprovider)
+    // {
+    //     $validated = $request->validate([
+    //         'name' => 'sometimes|string',
+    //         'email' => 'sometimes|email|unique:servicesproviders,email,' . $servicesprovider->id,
+    //         'assistantName' => 'sometimes|string',
+    //         'assistantphoneNumber' => 'nullable|string',
+    //         'qualification' => 'sometimes|string',
+    //         'phoneNumber' => 'nullable|string',
+    //         'organizationMobile' => 'nullable|string',
+    //         'password' => 'sometimes|string',
+    //         'service' => 'sometimes|string',
+    //         'specialized' => 'sometimes|string',
+    //         'experience' => 'sometimes|integer',
+    //         'serviceOrganization' => 'sometimes|array',
+    //         'status' => 'sometimes|string',
+    //         'amount' => 'nullable|string',
+    //         'type' => 'nullable|string',
+    //         'featured' => 'sometimes|boolean',
+    //         'profileImage' => 'nullable|image',
+    //         'certificate' => 'nullable|image',
+    //     ]);
 
-        // Handle file uploads and delete old files
-        if ($request->hasFile('profileImage')) {
-            if ($servicesprovider->profileImage) {
-                Storage::disk('public')->delete($servicesprovider->profileImage);
-            }
-            $validated['profileImage'] = $request->file('profileImage')->store('servicesproviders/profile_images', 'public');
-        }
+    //     // Handle file uploads and delete old files
+    //     if ($request->hasFile('profileImage')) {
+    //         if ($servicesprovider->profileImage) {
+    //             Storage::disk('public')->delete($servicesprovider->profileImage);
+    //         }
+    //         $validated['profileImage'] = $request->file('profileImage')->store('servicesproviders/profile_images', 'public');
+    //     }
 
-        if ($request->hasFile('certificate')) {
-            if ($servicesprovider->certificate) {
-                Storage::disk('public')->delete($servicesprovider->certificate);
-            }
-            $validated['certificate'] = $request->file('certificate')->store('servicesproviders/certificates', 'public');
-        }
+    //     if ($request->hasFile('certificate')) {
+    //         if ($servicesprovider->certificate) {
+    //             Storage::disk('public')->delete($servicesprovider->certificate);
+    //         }
+    //         $validated['certificate'] = $request->file('certificate')->store('servicesproviders/certificates', 'public');
+    //     }
 
-        $servicesprovider->update($validated);
+    //     $servicesprovider->update($validated);
 
-        return response()->json([
-            'success' => true,
-            'data' => $servicesprovider,
-            'message' => 'Service provider updated successfully.'
-        ]);
-    }
+    //     return response()->json([
+    //         'success' => true,
+    //         'data' => $servicesprovider,
+    //         'message' => 'Service provider updated successfully.'
+    //     ]);
+    // }
 
     // Delete a record
     public function destroy(Servicesproviders $servicesprovider)

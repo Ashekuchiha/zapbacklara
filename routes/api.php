@@ -28,7 +28,12 @@ Route::apiResource('services', ServicesController::class);
 
 // Route::get('states', [StatesController::class, 'index']);
 // Route::get('states/{id}', [StatesController::class, 'show']);
+
+Route::get('/states/all', [StatesController::class, 'getAllStates']);
 Route::apiResource('states',StatesController::class,);
+
+Route::get('/cities/{StateName}', [CitiesController::class, 'getCitiesByState']);
 Route::apiResource('cities',CitiesController::class,);
+
 Route::apiResource('serviceorganizations', ServiceorganizationController::class);
 Route::apiResource('servicesproviders', ServicesprovidersController::class);
