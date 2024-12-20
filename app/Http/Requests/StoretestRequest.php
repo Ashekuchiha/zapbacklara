@@ -45,7 +45,7 @@ class StoreTestRequest extends FormRequest
             'name' => 'required|string|max:255',
             'password' => 'required|string|min:8',
             'email' => 'required|email|unique:tests,email',
-            'profileImage' => 'nullable|image|max:2048',
+            'profileImage' => 'nullable|image|max:5120',
             'birthday' => 'required|date',
             'favoriteColors' => 'required|array|min:1',
             'favoriteColors.*' => 'string|in:green,black,white',

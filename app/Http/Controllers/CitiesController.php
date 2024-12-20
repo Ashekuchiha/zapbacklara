@@ -9,6 +9,22 @@ use App\Http\Requests\UpdatecitiesRequest;
 
 class CitiesController extends Controller
 {
+    //all city name
+    public function getCityNames()
+    {
+        try {
+            // Fetch all city names
+            $cityNames = Cities::pluck('CityName');
+    
+            return response()->json($cityNames, 200);
+        } catch (\Exception $e) {
+            // Handle errors
+            return response()->json([
+                'success' => false,
+                'message' => 'Error retrieving city names.',
+            ], 500);
+        }
+    }
     //by state
 
     public function getCitiesByState(Request $request, $StateName)

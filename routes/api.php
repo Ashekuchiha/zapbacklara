@@ -17,8 +17,9 @@ use App\Http\Controllers\StatesController;
 use App\Http\Controllers\CitiesController;
 use App\Http\Controllers\ServiceorganizationController;
 use App\Http\Controllers\ServicesprovidersController;
+use App\Http\Controllers\AppusersController;
 
-Route::apiResource('tests', TestController::class);
+// Route::apiResource('tests', TestController::class);
 
 
 // Route::get('services', [ServicesController::class, 'index']);
@@ -32,8 +33,10 @@ Route::apiResource('services', ServicesController::class);
 Route::get('/states/all', [StatesController::class, 'getAllStates']);
 Route::apiResource('states',StatesController::class,);
 
+Route::get('/cities/names', [CitiesController::class, 'getCityNames']);
 Route::get('/cities/{StateName}', [CitiesController::class, 'getCitiesByState']);
 Route::apiResource('cities',CitiesController::class,);
 
 Route::apiResource('serviceorganizations', ServiceorganizationController::class);
 Route::apiResource('servicesproviders', ServicesprovidersController::class);
+Route::apiResource('appusers', AppusersController::class);

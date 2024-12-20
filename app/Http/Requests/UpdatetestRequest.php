@@ -45,7 +45,7 @@ class UpdateTestRequest extends FormRequest
             'name' => 'sometimes|string|max:255',
             'password' => 'sometimes|string|min:8',
             'email' => 'sometimes|email|unique:tests,email,' . $this->route('test'),
-            'profileImage' => 'nullable|image|max:2048',
+            'profileImage' => 'nullable|image|max:5120',
             'birthday' => 'sometimes|date',
             'favoriteColors' => 'sometimes|array|min:1',
             'favoriteColors.*' => 'string|in:green,black,white',
